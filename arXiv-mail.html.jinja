@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{# This templates imitates arXiv's display#}
+<html>
+<head>
+    <title>Mises à jour arXiv</title>
+    <style type='text/css'>
+        li {
+          margin-bottom: 20px;
+        }
+        .list-identifier {
+          font-weight: bold;
+        }
+        .list-title {
+          font-size: large;
+          font-weight: bold;
+          margin: .25em 0 0 0;
+          line-height: 120%;
+        }
+        .list-authors {
+          font-size: 110%;
+        }
+        .meta {
+          line-height: 130%;
+        }
+        .summary {
+          font-size: 90%;
+        }
+        .list-published {
+          font-size: 80%;
+        }
+    </style>
+</head>
+
+<body>
+  <ul>
+  {% for entry in entries %}
+    <li>
+      <span class="list-identifier"><a href="{{ entry.abstract_page|e }}" title="Abstract">arXiv:{{ entry.id|e }}</a> [<a href="{{entry.pdf|e}}" title="Download PDF">pdf</a>]</span>
+      <div class="meta">
+      <div class="list-title mathjax">{{ entry.title|e }}</div>
+      <div class="list-authors">
+        {% for author in entry.authors %}
+          {{author|e}}
+          {% if loop.nextitem is defined %}, {% endif %}
+        {% endfor%}
+      </div>
+      <div class="summary">{{ entry.abstract|e }}</div>
+      <div class="list-published">Published: {{ entry.published|datetimeformat('%d/%m/%Y') }}, Updated: {{entry.updated|datetimeformat('%d/%m/%Y')}}</div>
+    </li>
+  {% endfor %}
+  </ul>
+</body>
+</html>
